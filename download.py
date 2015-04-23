@@ -1,5 +1,6 @@
 # -*- Encoding: utf-8 -*-
 import time
+import re
 from httplib2 import Http
 
 
@@ -16,6 +17,10 @@ headers_templates = { 'Connection': 'keep-alive',
 }
 
 
+
+url_sync = 'http://score1.win007.com/vbsxml/ch_goalBf3.xml?%s'  # timestamp
+
+
 def download(url, method='GET'):
     h = Http()
     headers = headers_templates.copy()
@@ -25,15 +30,28 @@ def download(url, method='GET'):
         f.write(content)
     return content
 
+def keep_alive(func, interval=2):
+    while True:
+        timestamp = int(time.time()) * 1000
+        url = url_sync % timestamp
+        data = download(url)
+        # test data
+        # data = r"<?xml  version='1.0' encoding='UTF-8'?><c><match><m>1123193,4627486,0,0.90,1.00,47188050,1.03,10.00,75.00,4156215,3.50,3.70,0.16,1,1,1,1</m></match></c>"
+
+        print data
+
+        new_match = re.compile(r'<m>(.*?)</m>')
+        func(new_match.findall(data), timestamp)
+
+        time.sleep(interval)
+
+
 
 if __name__ == '__main__':
     import sys
 
-    #url = 'http://bf.win007.com/vbsxml/alias2.js'
+    def out(seq, timestamp):
+        print '%s%d%s' % ('-' * 20, timestamp, '-'*20)
+        print seq
 
-    while True:
-        timestamp = int(time.time()) * 1000
-        url = 'http://score1.win007.com/vbsxml/ch_goalBf3.xml?%s' % timestamp
-        print timestamp
-        print download(url)
-        time.sleep(2)
+    keep_alive(out)
