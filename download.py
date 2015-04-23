@@ -1,6 +1,8 @@
 # -*- Encoding: utf-8 -*-
 import time
 import re
+
+import socket
 from httplib2 import Http
 
 
@@ -22,26 +24,28 @@ url_sync = 'http://score1.win007.com/vbsxml/ch_goalBf3.xml?%s'  # timestamp
 
 
 def download(url, method='GET'):
-    h = Http()
+    h = Http(timeout=2)
     headers = headers_templates.copy()
-    rsp, content = h.request(url, method, headers=headers)
-
-    with open('tt.html', 'w') as f:
-        f.write(content)
+    try:
+        rsp, content = h.request(url, method, headers=headers)
+    except socket.timeout:
+        return None
     return content
 
 def keep_alive(func, interval=2):
     while True:
-        timestamp = int(time.time()) * 1000
+        start_time = time.time()
+        timestamp = int(start_time) * 1000
         url = url_sync % timestamp
         data = download(url)
         # test data
         # data = r"<?xml  version='1.0' encoding='UTF-8'?><c><match><m>1123193,4627486,0,0.90,1.00,47188050,1.03,10.00,75.00,4156215,3.50,3.70,0.16,1,1,1,1</m></match></c>"
 
-        print data
-
-        new_match = re.compile(r'<m>(.*?)</m>')
-        func(new_match.findall(data), timestamp)
+        if data is not None:
+            new_match = re.compile(r'<m>(.*?)</m>')
+            func(new_match.findall(data), timestamp)
+        else:
+            print 'time out'
 
         time.sleep(interval)
 
