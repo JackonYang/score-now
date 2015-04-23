@@ -22,6 +22,7 @@ headers_templates = { 'Connection': 'keep-alive',
 
 url_init = 'http://score1.win007.com/vbsxml/goalBf3.xml?%s'  # timestamp
 url_sync = 'http://score1.win007.com/vbsxml/ch_goalBf3.xml?%s'  # timestamp
+url_bfdata = 'http://score1.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 
 
 def download(url, method='GET'):
@@ -62,6 +63,17 @@ def init_score(func):
     else:
         print 'time out'
 
+def bfdata(func):
+    start_time = time.time()
+    timestamp = int(start_time) * 1000
+    url = url_bfdata % timestamp
+    data = download(url).decode('gbk')
+
+    if data is not None:
+        func(data, timestamp)
+    else:
+        print 'time out'
+
 
 
 if __name__ == '__main__':
@@ -72,4 +84,5 @@ if __name__ == '__main__':
         print seq
 
     init_score(out)
+    bfdata(out)
     keep_alive(out)
