@@ -20,6 +20,7 @@ headers_templates = { 'Connection': 'keep-alive',
 
 
 
+url_init = 'http://score1.win007.com/vbsxml/goalBf3.xml?%s'  # timestamp
 url_sync = 'http://score1.win007.com/vbsxml/ch_goalBf3.xml?%s'  # timestamp
 
 
@@ -49,6 +50,18 @@ def keep_alive(func, interval=2):
 
         time.sleep(interval)
 
+def init_score(func):
+    start_time = time.time()
+    timestamp = int(start_time) * 1000
+    url = url_init % timestamp
+    data = download(url)
+
+    if data is not None:
+        new_match = re.compile(r'<m>(.*?)</m>')
+        func(new_match.findall(data), timestamp)
+    else:
+        print 'time out'
+
 
 
 if __name__ == '__main__':
@@ -58,4 +71,5 @@ if __name__ == '__main__':
         print '%s%d%s' % ('-' * 20, timestamp, '-'*20)
         print seq
 
+    init_score(out)
     keep_alive(out)
