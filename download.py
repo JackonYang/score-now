@@ -5,6 +5,8 @@ import re
 import socket
 from httplib2 import Http
 
+from util import url_timestamp
+
 
 headers_templates = { 'Connection': 'keep-alive',
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.65 Safari/534.24',
@@ -52,16 +54,16 @@ def keep_alive(func, interval=2):
         time.sleep(interval)
 
 def init_score(func):
-    start_time = time.time()
-    timestamp = int(start_time) * 1000
-    url = url_init % timestamp
-    data = download(url)
+    timestamp = url_timestamp()
+    data = download(url_init % timestamp)
 
     if data is not None:
         new_match = re.compile(r'<m>(.*?)</m>')
-        func(new_match.findall(data), timestamp)
+        init_data = [item.split(',') for item in new_match.findall(data)]
+        for m in init_data:
+            print m
     else:
-        print 'time out'
+        print 'time out'  # TODO: log
 
 def bfdata(func):
     start_time = time.time()
@@ -84,5 +86,5 @@ if __name__ == '__main__':
         print seq
 
     init_score(out)
-    bfdata(out)
-    keep_alive(out)
+    #bfdata(out)
+    #keep_alive(out)
