@@ -20,9 +20,9 @@ headers_templates = { 'Connection': 'keep-alive',
 
 
 
-url_init = 'http://score1.win007.com/vbsxml/goalBf3.xml?%s'  # timestamp
-url_sync = 'http://score1.win007.com/vbsxml/ch_goalBf3.xml?%s'  # timestamp
-url_bfdata = 'http://score1.win007.com/vbsxml/bfdata.js?%s'  # timestamp
+url_init = 'http://score.win007.com/vbsxml/goalBf3.xml?%s'  # timestamp
+url_sync = 'http://score.win007.com/vbsxml/ch_goalBf3.xml?%s'  # timestamp
+url_bfdata = 'http://score.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 
 
 def download(url, method='GET'):
