@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+    <meta charset="utf-8" /> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <title>bfdata.js -- By Jackon </title>
+</head> 
+
+<body> 
+
+<div class="container">
+    <div class="result">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    {% for head in col_names %}
+                        <th>{{ head }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody class="tbl-result">
+            
+                {% for item in data %}
+                <tr>
+                    {% for val in item %}
+                        <td scope="row">{{ val }}</td>
+                    {% endfor %}
+                </tr> 
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
