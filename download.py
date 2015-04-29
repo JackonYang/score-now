@@ -23,6 +23,7 @@ headers_templates = { 'Connection': 'keep-alive',
 
 
 url_bfdata = 'http://score.win007.com/vbsxml/bfdata.js?%s'  # timestamp
+url_asian = 'http://vip.win007.com/AsianOdds_n.aspx?id=%s'  # match_id
 
 
 def req(url, method='GET'):
@@ -44,16 +45,27 @@ def bfdata(func):
         print 'time out'
         return
 
-    return func(data, t_req, 'bfdata')
+    return func(data, 'testdata/bfdata_%s.js' % t_req)
+
+
+def asian(match_id, func):
+    url = url_asian % match_id
+    data = req(url).decode('gbk').encode('utf8')
+
+    if data is None:
+        print 'time out'
+        return
+    return func(data, 'testdata/asian.html')
 
 
 
 if __name__ == '__main__':
     import sys
 
-    def out_file(content, request_time, identifier):
-        with open('testdata/%s_%s.js' % (identifier, request_time), 'w') as f:
+    def out_file(content, filename):
+        with open(filename, 'w') as f:
             f.write(content or 'error')
 
 
-    bfdata(out_file)
+    #bfdata(out_file)
+    asian('1081262', out_file)
