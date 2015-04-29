@@ -29,11 +29,7 @@ def disp(**kwargs):
     print 'success! saved in %s' % os.path.abspath(out_filename)
 
 
-if __name__ == '__main__':
-    filename = 'testdata/bfdata_1430238984000.js'
-    with open(filename, 'r') as f:
-        html = f.readlines()
-
+def col_name_A():
     col_names = ['unknown']*48
 
     col_names[0] = u'ID'
@@ -71,4 +67,11 @@ if __name__ == '__main__':
     #col_names[41] = u'if =1, 有直播'
     #col_names[47] = u'if =1, 有情报'
 
-    disp(col_names=col_names, data=parse_score(''.join(html).decode('utf8')))
+    return col_names
+
+
+if __name__ == '__main__':
+    filename = 'testdata/bfdata_1430238984000.js'
+    with open(filename, 'r') as f:
+        html = f.readlines()
+    disp(col_names=col_name_A(), data=parse_score(''.join(html).decode('utf8')))
