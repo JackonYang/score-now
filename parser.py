@@ -28,7 +28,7 @@ def disp(**kwargs):
     env = Environment(loader=FileSystemLoader(template_dir))
     template = env.get_template('index.html')
 
-    out_filename = 'testdata/bfdata_index.html'
+    out_filename = 'testdata/result.html'
     with codecs.open(out_filename, 'w', 'utf8') as f:
         f.write(template.render(**kwargs))
     print 'success! saved in %s' % os.path.abspath(out_filename)
@@ -74,6 +74,22 @@ def col_name_A():
 
     return col_names
 
+def col_name_asian():
+    col_names = ['None']*13
+
+    col_names[0] = u'公司'
+    col_names[2] = u'初盘-主队'
+    col_names[3] = u'初盘-盘口'
+    col_names[4] = u'初盘-客队'
+    col_names[5] = u'即时-主队'
+    col_names[6] = u'即时-盘口'
+    col_names[7] = u'即时-客队'
+    col_names[8] = u'终盘-主队'
+    col_names[9] = u'终盘-盘口'
+    col_names[10] = u'终盘-客队'
+
+    return col_names
+
 
 def read_file(filename):
     with open(filename, 'r') as f:
@@ -87,5 +103,4 @@ if __name__ == '__main__':
     disp(col_names=col_name_A(), data=parse_score(read_file(f_bfdata).decode('utf8')))
 
     f_asian = 'testdata/asian.html'
-    for i in parse_asian(read_file(f_asian).decode('utf8'))[0]:
-        print i
+    disp(col_names=col_name_asian(), data=parse_asian(read_file(f_asian).decode('utf8')))
