@@ -14,9 +14,14 @@ template_dir = "templates"
 
 
 def parse_score(content):
-    #ptn = re.compile(r'A\[(\d+)\]="(.*?)".split\(\'^\'\);')
     ptn = re.compile(r'A\[\d+\]="(.*?)"\.split')
     return [item.split('^') for item in ptn.findall(content)]
+
+
+def parse_asian(content):
+    tbl1_ptn = re.compile(r'\<tr bgcolor[^>]*\>(.*?)\<\/tr\>', re.DOTALL)
+    tbl1_info = re.compile(r'\<td[^>]*\>(.*?)\<\/td\>', re.DOTALL)
+    return [tbl1_info.findall(item) for item in tbl1_ptn.findall(content)]
 
 
 def disp(**kwargs):
@@ -70,8 +75,17 @@ def col_name_A():
     return col_names
 
 
-if __name__ == '__main__':
-    filename = 'testdata/bfdata_1430238984000.js'
+def read_file(filename):
     with open(filename, 'r') as f:
         html = f.readlines()
-    disp(col_names=col_name_A(), data=parse_score(''.join(html).decode('utf8')))
+    return ''.join(html)
+
+
+if __name__ == '__main__':
+
+    f_bfdata = 'testdata/bfdata_1430238984000.js'
+    disp(col_names=col_name_A(), data=parse_score(read_file(f_bfdata).decode('utf8')))
+
+    f_asian = 'testdata/asian.html'
+    for i in parse_asian(read_file(f_asian).decode('utf8'))[0]:
+        print i
