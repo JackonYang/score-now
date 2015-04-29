@@ -104,3 +104,6 @@ if __name__ == '__main__':
 
     f_asian = 'testdata/asian.html'
     disp(col_names=col_name_asian(), data=parse_asian(read_file(f_asian).decode('utf8')))
+
+    f_overdown = 'testdata/over_down.html'
+    disp(col_names=col_name_asian(), data=parse_asian(read_file(f_overdown).decode('utf8')))
