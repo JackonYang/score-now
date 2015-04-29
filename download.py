@@ -24,6 +24,7 @@ headers_templates = { 'Connection': 'keep-alive',
 
 url_bfdata = 'http://score.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 url_asian = 'http://vip.win007.com/AsianOdds_n.aspx?id=%s'  # match_id
+url_overdown = 'http://vip.win007.com/OverDown_n.aspx?id=%s'  # match_id
 
 
 def req(url, method='GET'):
@@ -58,6 +59,15 @@ def asian(match_id, func):
     return func(data, 'testdata/asian.html')
 
 
+def over_down(match_id, func):
+    url = url_overdown % match_id
+    data = req(url).decode('gbk').encode('utf8')
+
+    if data is None:
+        print 'time out'
+        return
+    return func(data, 'testdata/over_down.html')
+
 
 if __name__ == '__main__':
     import sys
@@ -68,4 +78,5 @@ if __name__ == '__main__':
 
 
     #bfdata(out_file)
-    asian('1081262', out_file)
+    #asian('1081262', out_file)
+    over_down('1096621', out_file)
