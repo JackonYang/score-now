@@ -22,8 +22,6 @@ headers_templates = { 'Connection': 'keep-alive',
 
 
 
-url_init = 'http://score.win007.com/vbsxml/goalBf3.xml?%s'  # timestamp
-url_sync = 'http://score.win007.com/vbsxml/ch_goalBf3.xml?%s'  # timestamp
 url_bfdata = 'http://score.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 
 
@@ -36,34 +34,6 @@ def req(url, method='GET'):
         return None
     return content
 
-def keep_alive(func, interval=2):
-    while True:
-        start_time = time.time()
-        timestamp = int(start_time) * 1000
-        url = url_sync % timestamp
-        data = req(url)
-        # test data
-        # data = r"<?xml  version='1.0' encoding='UTF-8'?><c><match><m>1123193,4627486,0,0.90,1.00,47188050,1.03,10.00,75.00,4156215,3.50,3.70,0.16,1,1,1,1</m></match></c>"
-
-        if data is not None:
-            new_match = re.compile(r'<m>(.*?)</m>')
-            func(new_match.findall(data), timestamp)
-        else:
-            print 'time out'
-
-        time.sleep(interval)
-
-def init_score(func):
-    timestamp = url_timestamp()
-    data = req(url_init % timestamp)
-
-    if data is not None:
-        new_match = re.compile(r'<m>(.*?)</m>')
-        init_data = [item.split(',') for item in new_match.findall(data)]
-        for m in init_data:
-            print m
-    else:
-        print 'time out'  # TODO: log
 
 def bfdata(func):
     t_req = url_timestamp()
@@ -81,12 +51,9 @@ def bfdata(func):
 if __name__ == '__main__':
     import sys
 
-    def out(seq, timestamp):
-        print '%s%d%s' % ('-' * 20, timestamp, '-'*20)
-        print seq
-
     def out_file(content, request_time, identifier):
         with open('testdata/%s_%s.js' % (identifier, request_time), 'w') as f:
             f.write(content or 'error')
+
 
     bfdata(out_file)
