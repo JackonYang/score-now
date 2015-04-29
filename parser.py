@@ -66,8 +66,7 @@ if __name__ == '__main__':
     #col_names[27] = u'if =1, 显示 阵容'
     col_names[28] = u'滚球'
 
-    col_names[28] = u'备注'
-
+    col_names[30] = u'备注'
     col_names[31] = u'url 联赛'
     #col_names[41] = u'if =1, 有直播'
     #col_names[47] = u'if =1, 有情报'
