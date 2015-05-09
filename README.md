@@ -1,5 +1,4 @@
-Score Now
-=========
+## Score Now
 
 实时比分与赔率信息
 
@@ -8,3 +7,10 @@ Score Now
 ```shell
 $ pip install -r requirements.txt
 ```
+
+#### 爬虫启动
+
+```shell
+$ python manage.py rundirect crawler/grab.py
+```
+
