@@ -5,11 +5,9 @@ import re
 import socket
 from httplib2 import Http
 
-from util import url_timestamp
 
-
-headers_templates = { 'Connection': 'keep-alive',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.65 Safari/534.24',
+headers_templates = {
+    'Connection': 'keep-alive', 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.65 Safari/534.24',
     'Content-type': 'application/x-www-form-urlencoded',
     'Accept': '*/*',
     'Accept-Charset': 'UTF-8,*;q=0.5',
@@ -21,10 +19,13 @@ headers_templates = { 'Connection': 'keep-alive',
 }
 
 
-
 url_bfdata = 'http://score.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 url_asian = 'http://vip.win007.com/AsianOdds_n.aspx?id=%s'  # match_id
 url_overdown = 'http://vip.win007.com/OverDown_n.aspx?id=%s'  # match_id
+
+
+def url_timestamp():
+    return int(time.time()) * 1000
 
 
 def req(url, method='GET'):
@@ -34,49 +35,62 @@ def req(url, method='GET'):
         rsp, content = h.request(url, method, headers=headers)
     except socket.timeout:
         return None
-    return content
+    return content.decode('gbk').encode('utf8')
 
 
-def bfdata(func):
-    t_req = url_timestamp()
+def bfdata():
     url = url_bfdata % url_timestamp()
-    data = req(url).decode('gbk').encode('utf8')
+    data = req(url)
 
     if data is None:
-        print 'time out'
+        print 'time out'  # log
         return
 
-    return func(data, 'testdata/bfdata_%s.js' % t_req)
+    ptn = re.compile(r'A\[\d+\]="(.*?)"\.split')
+    return [item.split('^') for item in ptn.findall(data)]
 
 
-def asian(match_id, func):
+def clean_data(data):
+    tbl1_ptn = re.compile(r'\<tr bgcolor[^>]*\>(.*?)\<\/tr\>', re.DOTALL)
+    tbl1_info = re.compile(r'\<td[^>]*\>(.*?)\<\/td\>', re.DOTALL)
+    return [tbl1_info.findall(item) for item in tbl1_ptn.findall(data)]
+
+
+def asian(match_id):
     url = url_asian % match_id
-    data = req(url).decode('gbk').encode('utf8')
+    data = req(url)
 
     if data is None:
         print 'time out'
         return
-    return func(data, 'testdata/asian.html')
+
+    return clean_data(data)
 
 
-def SoccerSize(match_id, func):
+def soccer_size(match_id):
     url = url_overdown % match_id
-    data = req(url).decode('gbk').encode('utf8')
+    data = req(url)
 
     if data is None:
         print 'time out'
         return
-    return func(data, 'testdata/SoccerSize.html')
+
+    return clean_data(data)
 
 
 if __name__ == '__main__':
-    import sys
 
-    def out_file(content, filename):
-        with open(filename, 'w') as f:
-            f.write(content or 'error')
+    line = lambda t: '%s%s%s' % ('-'*20, t, '-'*20)
+
+    print line('Total')
+    data_total = bfdata()
+    print data_total[0]
+
+    id = data_total[0][0]
 
 
-    #bfdata(out_file)
-    #asian('1081262', out_file)
-    SoccerSize('1096621', out_file)
+    print line('Asian')
+    print asian(id)[0]
+
+    print line('Soccer Size')
+    print soccer_size(id)[0]
