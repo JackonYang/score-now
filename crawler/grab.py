@@ -54,7 +54,15 @@ def get_match_asian(match_id):
     D_Asian.objects.bulk_create(querysetlist)
 
 
-if __name__ == '__main__':
+def ongoing():
+    """
+    status > 0  ongoing
+    status = -1 done
+    status = 0  not start
+    """
+    return set([match.match_id for match in Total.objects.all() if int(match.match_status) > 0])
+
+def grab_all():
     get_match_list()
 
     i = 0
@@ -66,3 +74,7 @@ if __name__ == '__main__':
         else:
             i += 1
             print i
+
+if __name__ == '__main__':
+    #grab_all()
+    print len(ongoing())
