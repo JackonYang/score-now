@@ -59,14 +59,14 @@ def asian(match_id, func):
     return func(data, 'testdata/asian.html')
 
 
-def over_down(match_id, func):
+def SoccerSize(match_id, func):
     url = url_overdown % match_id
     data = req(url).decode('gbk').encode('utf8')
 
     if data is None:
         print 'time out'
         return
-    return func(data, 'testdata/over_down.html')
+    return func(data, 'testdata/SoccerSize.html')
 
 
 if __name__ == '__main__':
@@ -79,4 +79,4 @@ if __name__ == '__main__':
 
     #bfdata(out_file)
     #asian('1081262', out_file)
-    over_down('1096621', out_file)
+    SoccerSize('1096621', out_file)

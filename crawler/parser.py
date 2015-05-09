@@ -24,16 +24,6 @@ def parse_asian(content):
     return [tbl1_info.findall(item) for item in tbl1_ptn.findall(content)]
 
 
-def disp(**kwargs):
-    env = Environment(loader=FileSystemLoader(template_dir))
-    template = env.get_template('index.html')
-
-    out_filename = 'testdata/result.html'
-    with codecs.open(out_filename, 'w', 'utf8') as f:
-        f.write(template.render(**kwargs))
-    print 'success! saved in %s' % os.path.abspath(out_filename)
-
-
 def col_name_A():
     col_names = ['unknown']*48
 
@@ -99,11 +89,11 @@ def read_file(filename):
 
 if __name__ == '__main__':
 
-    f_bfdata = 'testdata/bfdata_1430238984000.js'
-    disp(col_names=col_name_A(), data=parse_score(read_file(f_bfdata).decode('utf8')))
+    #f_bfdata = 'testdata/bfdata_1430238984000.js'
+    #disp(col_names=col_name_A(), data=parse_score(read_file(f_bfdata).decode('utf8')))
 
-    f_asian = 'testdata/asian.html'
-    disp(col_names=col_name_asian(), data=parse_asian(read_file(f_asian).decode('utf8')))
+    #f_asian = 'testdata/asian.html'
+    #disp(col_names=col_name_asian(), data=parse_asian(read_file(f_asian).decode('utf8')))
 
-    f_overdown = 'testdata/over_down.html'
-    disp(col_names=col_name_asian(), data=parse_asian(read_file(f_overdown).decode('utf8')))
+    f_SoccerSize = 'testdata/SoccerSize.html'
+    print parse_asian(read_file(f_SoccerSize).decode('utf8'))
