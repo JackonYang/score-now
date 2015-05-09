@@ -1,4 +1,5 @@
 httplib2
 
 # Django
-django==1.7.1
+django
+django_rundirect
