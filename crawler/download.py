@@ -43,7 +43,7 @@ def bfdata():
     data = req(url)
 
     if data is None:
-        print 'time out'  # log
+        print 'time out'  # raise error
         return
 
     ptn = re.compile(r'A\[\d+\]="(.*?)"\.split')
