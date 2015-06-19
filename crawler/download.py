@@ -19,7 +19,7 @@ headers_templates = {
 }
 
 
-url_bfdata = 'http://score.win007.com/vbsxml/bfdata.js?%s'  # timestamp
+url_bfdata = 'http://live.win007.com/vbsxml/bfdata.js?%s'  # timestamp
 url_asian = 'http://vip.win007.com/AsianOdds_n.aspx?id=%s'  # match_id
 url_overdown = 'http://vip.win007.com/OverDown_n.aspx?id=%s'  # match_id
 
@@ -38,7 +38,18 @@ def req(url, method='GET'):
     return content.decode('gbk').encode('utf8')
 
 
-def bfdata():
+fixed_info = (  # match list, bf_data cols
+        ("match_id", 0),
+        ("League", 2),  # name of League
+        ("home", 5),  # name of home team
+        ("visiting", 8),  # name of visiting team
+        ("t_basepoint", 12),  # match start time basepoint
+        ("is_betting", 28),
+        ("notes", 30),
+        )
+
+
+def get_match_list():
     url = url_bfdata % url_timestamp()
     data = req(url)
 
@@ -47,7 +58,8 @@ def bfdata():
         return
 
     ptn = re.compile(r'A\[\d+\]="(.*?)"\.split')
-    return [item.split('^') for item in ptn.findall(data)]
+    m = [item.split('^') for item in ptn.findall(data)]
+    return [{k: item[idx] for k, idx in fixed_info} for item in m]
 
 
 def clean_data(data):
@@ -83,8 +95,10 @@ if __name__ == '__main__':
     line = lambda t: '%s%s%s' % ('-'*20, t, '-'*20)
 
     print line('Total')
-    data_total = bfdata()
-    print data_total[0]
+    data_total = get_match_list()
+
+    for item in data_total:
+        print '--'.join(item.values())
 
     id = data_total[0][0]
 
