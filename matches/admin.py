@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 from django.contrib import admin
-from crawler.models import Total, D_Asian
+from matches.models import Total, D_Asian
 
 
 class TotalAdmin(admin.ModelAdmin):
