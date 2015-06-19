@@ -4,6 +4,7 @@ from django.conf import settings
 
 urlpatterns = patterns('',
     url(r'^$', 'base.views.home', name='home'),
+    url(r'^matches/', include('crawler.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 
