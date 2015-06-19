@@ -40,7 +40,7 @@ def req(url, method='GET'):
 
 fixed_info = (  # match list, bf_data cols
         ("match_id", 0),
-        ("League", 2),  # name of League
+        ("league", 2),  # name of league
         ("home", 5),  # name of home team
         ("visiting", 8),  # name of visiting team
         ("t_basepoint", 12),  # match start time basepoint

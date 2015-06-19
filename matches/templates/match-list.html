@@ -6,6 +6,32 @@
 
 {% block content %}
 
-matches list
+<table class="table">
+    <caption>今日比赛列表(共 {{ match_list|length }} 场)</caption>
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>联赛</th>
+            <th>主队</th>
+            <th>客队</th>
+            <th>滚球</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in match_list %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ item.match_id }}</td>
+            <td>{{ item.league }}</td>
+            <td>{{ item.home }}</td>
+            <td>{{ item.visiting }}</td>
+            <td>{{ item.is_betting }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}
