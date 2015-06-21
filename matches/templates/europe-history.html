@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title> 欧赔历史记录 </title>
+{% endblock %}
+
+{% block content %}
+
+<table class="table">
+    <caption>比赛 {{ match_id }}</caption>
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>足彩公司</th>
+            <th>主胜</th>
+            <th>和</th>
+            <th>客胜</th>
+            <th>变化时间</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for company, items in history.items %}
+            {% for item in items %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+
+                <td>{{ company }}</td>
+
+                {% for record in item %}
+                <td>{{ record }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
