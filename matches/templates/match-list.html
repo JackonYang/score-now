@@ -17,6 +17,7 @@
             <th>主队</th>
             <th>客队</th>
             <th>滚球</th>
+            <th>详细</th>
         </tr>
     </thead>
 
@@ -29,6 +30,7 @@
             <td>{{ item.home }}</td>
             <td>{{ item.visiting }}</td>
             <td>{{ item.is_betting }}</td>
+            <td><a href="{% url "europe" item.match_id %}">欧赔</a></td>
         </tr>
         {% endfor %}
     </tbody>
