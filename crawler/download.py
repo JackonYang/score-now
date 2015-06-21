@@ -95,6 +95,13 @@ def soccer_size(match_id):
     return clean_data(data)
 
 
+# 欧赔只关注 4 家公司数据
+# 48408691 bet 365(英国)
+# 48417881 Redbet(马耳他)
+# 48407436 SB(Crown)
+# 48424205 澳门
+europe_companys = {'48408691', '48417881', '48407436', '48424205'}
+
 # 欧赔 赔率历史记录与变化时间
 def europe(match_id):
     url = url_Europe % match_id
@@ -104,11 +111,11 @@ def europe(match_id):
         print 'time out'
         return
 
-    match_detail = data.strip().split('\r\n')[-1]
-    ptn = re.compile(r'"(?:(\d+)\^(.+?))"')
+    match_detail = data[data.find('var gameDetail'):]  # var gameDetail line
 
-    #return [{company_id: item.split('|') for item in history.split(';')} for company_id, history in ptn.findall(match_detail)]
-    return {company_id: [item.split('|') for item in history.strip(';').split(';')] for company_id, history in ptn.findall(match_detail)}
+    ptn = re.compile(r'"(?:(\d+)\^(.+?))"')  # history data of a company
+
+    return {company_id: [item.split('|') for item in history.split(';') if item] for company_id, history in ptn.findall(match_detail) if company_id in europe_companys}
 
 
 if __name__ == '__main__':
@@ -124,7 +131,7 @@ if __name__ == '__main__':
     id = data_total[0]['match_id']
 
 
-    print line('Europe')
+    print line('Europe %s' % id)
     europe_data = europe(id)
     for company_id, history in europe_data.items():
         print company_id, history
