@@ -19,7 +19,11 @@ headers_templates = {
 }
 
 
+# match list
 url_bfdata = 'http://live.win007.com/vbsxml/bfdata.js?%s'  # timestamp
+# 欧盘
+url_Europe = 'http://1x2.nowscore.com/%s.js'  # match_id
+# 亚盘
 url_asian = 'http://vip.win007.com/AsianOdds_n.aspx?id=%s'  # match_id
 url_overdown = 'http://vip.win007.com/OverDown_n.aspx?id=%s'  # match_id
 
@@ -28,14 +32,14 @@ def url_timestamp():
     return int(time.time()) * 1000
 
 
-def req(url, method='GET'):
+def req(url, encode='gbk', method='GET'):
     h = Http(timeout=2)
     headers = headers_templates.copy()
     try:
         rsp, content = h.request(url, method, headers=headers)
     except socket.timeout:
         return None
-    return content.decode('gbk').encode('utf8')
+    return content.decode(encode).encode('utf8')
 
 
 fixed_info = (  # match list, bf_data cols
@@ -49,6 +53,7 @@ fixed_info = (  # match list, bf_data cols
         )
 
 
+# match list
 def get_match_list():
     url = url_bfdata % url_timestamp()
     data = req(url)
@@ -90,6 +95,22 @@ def soccer_size(match_id):
     return clean_data(data)
 
 
+# 欧赔 赔率历史记录与变化时间
+def europe(match_id):
+    url = url_Europe % match_id
+    data = req(url, 'utf8')
+
+    if data is None:
+        print 'time out'
+        return
+
+    match_detail = data.strip().split('\r\n')[-1]
+    ptn = re.compile(r'"(?:(\d+)\^(.+?))"')
+
+    #return [{company_id: item.split('|') for item in history.split(';')} for company_id, history in ptn.findall(match_detail)]
+    return {company_id: [item.split('|') for item in history.strip(';').split(';')] for company_id, history in ptn.findall(match_detail)}
+
+
 if __name__ == '__main__':
 
     line = lambda t: '%s%s%s' % ('-'*20, t, '-'*20)
@@ -97,14 +118,19 @@ if __name__ == '__main__':
     print line('Total')
     data_total = get_match_list()
 
-    for item in data_total:
-        print '--'.join(item.values())
+    #for item in data_total:
+    #    print '--'.join(item.values())
 
-    id = data_total[0][0]
+    id = data_total[0]['match_id']
 
 
-    print line('Asian')
-    print asian(id)[0]
+    print line('Europe')
+    europe_data = europe(id)
+    for company_id, history in europe_data.items():
+        print company_id, history
 
-    print line('Soccer Size')
-    print soccer_size(id)[0]
+    #print line('Asian')
+    #print asian(id)[0]
+
+    #print line('Soccer Size')
+    #print soccer_size(id)[0]
