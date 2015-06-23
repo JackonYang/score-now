@@ -130,7 +130,7 @@ if __name__ == '__main__':
 
     line = lambda t: '%s%s%s' % ('-'*20, t, '-'*20)
 
-    print line('Total')
+    print line('Match List')
     data_total = get_match_list()
 
     #for item in data_total:

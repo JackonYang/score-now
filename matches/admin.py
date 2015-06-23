@@ -1,18 +1,13 @@
 #-*- coding:utf-8 -*-
 from django.contrib import admin
-from matches.models import Total, D_Asian
+from matches.models import Match, D_Asian
 
 
-class TotalAdmin(admin.ModelAdmin):
+class MatchAdmin(admin.ModelAdmin):
     list_display = (
-        "match_id", "League",
-        "name_home", "name_visiting",
-        "t_basepoint", "match_status",
-        "goal_home_full", "goal_visiting_full",
-        "goal_home_half", "goal_visiting_half",
-        "red_home", "red_visiting",
-        "yellow_home", "yellow_visiting",
-        "is_betting", "notes", 'timestamp')
+        "match_id", "league", "home", "visiting",
+        "is_betting", "notes", 'match_date', 'match_time',
+        )
 
 
 class D_AsianAdmin(admin.ModelAdmin):
@@ -25,5 +20,5 @@ class D_AsianAdmin(admin.ModelAdmin):
         )
 
 
-admin.site.register(Total, TotalAdmin)
+admin.site.register(Match, MatchAdmin)
 admin.site.register(D_Asian, D_AsianAdmin)
