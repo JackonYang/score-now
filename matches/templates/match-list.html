@@ -6,8 +6,10 @@
 
 {% block content %}
 
+<div class="table-responsive">
+
 <table class="table">
-    <caption>今日比赛列表(共 {{ match_list|length }} 场)</caption>
+    <caption>今日全部比赛(共 {{ match_list|length }} 场)</caption>
 
     <thead>
         <tr>
@@ -24,7 +26,7 @@
 
     <tbody>
         {% for item in match_list %}
-        <tr id="{{ item.match_id }}" class="status-{{ item.status }}" href="{% url "europe" item.match_id %}">
+        <tr id="{{ item.match_id }}" class="unknown" href="{% url "europe" item.match_id %}">
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ item.match_id }}</td>
             <td>{{ item.match_time }}</td>
@@ -32,11 +34,13 @@
             <td>{{ item.home }}</td>
             <td>{{ item.visiting }}</td>
             <td>{{ item.is_betting }}</td>
-            <td class="status-now">{{ item.get_status_display }}</td>
+            <td class="status-now">待分析</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+</div>
 
 {% endblock %}
 
@@ -45,15 +49,15 @@
 <script>
 
 $(document).ready(function () {
-    $("tr.status-0").each(function() {
+    $("tr.unknown").each(function() {
         var obj = $(this);
 
         $.getJSON(obj.attr("href"), function(result) {
             if ($.isEmptyObject(result)) {
-                obj.removeClass('status-0').addClass('status-2');
-                obj.find('.status-now').first().text('忽略');
+                obj.removeClass('unknown').addClass('info');
+                obj.find('.status-now').first().text('无数据');
             } else {
-                obj.removeClass('status-0').addClass('status-1');
+                obj.removeClass('unknown').addClass('danger');
                 obj.find('.status-now').first().text('关注');
             }
         });
