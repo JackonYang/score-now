@@ -38,4 +38,4 @@ def match_list(request):
 
 
 def europe(request, match_id):
-    return JsonResponse(downloader.europe(match_id))
+    return JsonResponse(downloader.europe(match_id) or dict())

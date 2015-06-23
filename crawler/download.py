@@ -39,7 +39,8 @@ def req(url, encode='gbk', method='GET'):
         rsp, content = h.request(url, method, headers=headers)
     except socket.timeout:
         return None
-    return content.decode(encode).encode('utf8')
+    if rsp['status'] != '404':
+        return content.decode(encode).encode('utf8')
 
 
 fixed_info = (  # match list, bf_data cols

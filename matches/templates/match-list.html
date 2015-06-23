@@ -24,7 +24,7 @@
 
     <tbody>
         {% for item in match_list %}
-        <tr id="{{ item.match_id }}" class="status-{{ item.status }}">
+        <tr id="{{ item.match_id }}" class="status-{{ item.status }}" href="{% url "europe" item.match_id %}">
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ item.match_id }}</td>
             <td>{{ item.match_time }}</td>
@@ -38,4 +38,22 @@
     </tbody>
 </table>
 
+{% endblock %}
+
+
+{% block js %}
+<script>
+
+$(document).ready(function () {
+    $("tr.status-0").each(function() {
+        var url = $(this).attr("href");
+
+        $.getJSON(url, function(result){
+            console.log(result);
+        });
+    });
+
+});
+
+</script>
 {% endblock %}
