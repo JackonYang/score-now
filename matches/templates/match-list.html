@@ -46,10 +46,16 @@
 
 $(document).ready(function () {
     $("tr.status-0").each(function() {
-        var url = $(this).attr("href");
+        var obj = $(this);
 
-        $.getJSON(url, function(result){
-            console.log(result);
+        $.getJSON(obj.attr("href"), function(result) {
+            if ($.isEmptyObject(result)) {
+                obj.removeClass('status-0').addClass('status-2');
+                obj.find('.status-now').first().text('忽略');
+            } else {
+                obj.removeClass('status-0').addClass('status-1');
+                obj.find('.status-now').first().text('关注');
+            }
         });
     });
 
