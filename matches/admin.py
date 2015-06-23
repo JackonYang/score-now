@@ -6,7 +6,8 @@ from matches.models import Match, D_Asian
 class MatchAdmin(admin.ModelAdmin):
     list_display = (
         "match_id", "league", "home", "visiting",
-        "is_betting", "notes", 'match_date', 'match_time',
+        'match_date', 'match_time',
+        "is_betting",
         )
 
 

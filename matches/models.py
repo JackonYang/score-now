@@ -3,6 +3,13 @@ import os
 from django.db import models
 
 
+match_status = (
+    (0, '待分析'),
+    (1, '关注'),
+    (2, '不关注'),
+    )
+
+
 class Match(models.Model):
     """match list
 
@@ -16,6 +23,7 @@ class Match(models.Model):
     is_betting = models.NullBooleanField(u'滚球')  # col-28
     notes = models.TextField(u'备注', max_length=500, blank=True)  # col-30
     update_time = models.DateTimeField(auto_now=True)
+    status = models.IntegerField(u'状态', choices=match_status, default=0)
 
     def __unicode__(self):
         return '%s(%s.vs.%s)' % (self.match_id, self.home, self.visiting)

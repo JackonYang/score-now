@@ -13,24 +13,26 @@
         <tr>
             <th>#</th>
             <th>ID</th>
+            <th>比赛时间</th>
             <th>联赛</th>
             <th>主队</th>
             <th>客队</th>
             <th>滚球</th>
-            <th>详细</th>
+            <th>关注状态</th>
         </tr>
     </thead>
 
     <tbody>
         {% for item in match_list %}
-        <tr>
+        <tr id="{{ item.match_id }}" class="status-{{ item.status }}">
             <th scope="row">{{ forloop.counter }}</th>
             <td>{{ item.match_id }}</td>
+            <td>{{ item.match_time }}</td>
             <td>{{ item.league }}</td>
             <td>{{ item.home }}</td>
             <td>{{ item.visiting }}</td>
             <td>{{ item.is_betting }}</td>
-            <td><a href="{% url "europe" item.match_id %}">欧赔</a></td>
+            <td class="status-now">{{ item.get_status_display }}</td>
         </tr>
         {% endfor %}
     </tbody>

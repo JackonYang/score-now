@@ -2,6 +2,8 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
+from django.http import JsonResponse
+
 import datetime
 import crawler.download as downloader
 from matches.models import Match
@@ -36,8 +38,4 @@ def match_list(request):
 
 
 def europe(request, match_id):
-    content = {
-            'match_id': match_id,
-            'history': downloader.europe(match_id),
-            }
-    return render_to_response('europe-history.html', RequestContext(request, content))
+    return JsonResponse(downloader.europe(match_id))
