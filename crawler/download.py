@@ -47,7 +47,7 @@ fixed_info = (  # match list, bf_data cols
         ("league", 2),  # name of league
         ("home", 5),  # name of home team
         ("visiting", 8),  # name of visiting team
-        ("t_basepoint", 12),  # match start time basepoint
+        ("match_time", 11),  # match start time
         ("is_betting", 28),
         ("notes", 30),
         )

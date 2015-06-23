@@ -11,13 +11,11 @@ class Match(models.Model):
     league = models.CharField(u'联赛', max_length=32)  # col-2
     home = models.CharField(u'主队', max_length=32)  # col-5
     visiting = models.CharField(u'客队', max_length=32)  # col-8
+    match_time = models.CharField(u'比赛时间', max_length=32)  # col-11
+    match_date = models.DateField(u'比赛日期', auto_now=True)
     is_betting = models.NullBooleanField(u'滚球')  # col-28
     notes = models.TextField(u'备注', max_length=500, blank=True)  # col-30
-    match_date = models.DateField(auto_now=True)
-    match_time = models.TimeField(auto_now=True)
     update_time = models.DateTimeField(auto_now=True)
-
-    t_basepoint = models.CharField(u'basepoint', max_length=32)  # col-8
 
     def __unicode__(self):
         return '%s(%s.vs.%s)' % (self.match_id, self.home, self.visiting)
