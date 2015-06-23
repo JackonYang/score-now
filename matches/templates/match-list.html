@@ -6,6 +6,32 @@
 
 {% block content %}
 
+
+<div class="table-responsive">
+
+<table class="table watching">
+    <caption>今日关注比赛(共 <span id="watch-num"></span>)</caption>
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>ID</th>
+            <th>比赛时间</th>
+            <th>联赛</th>
+            <th>主队</th>
+            <th>客队</th>
+            <th>滚球</th>
+            <th>足彩公司</th>
+        </tr>
+    </thead>
+
+    <tbody id="watching-data">
+    </tbody>
+</table>
+
+</div>
+
+
 <div class="table-responsive">
 
 <table class="table">
@@ -27,7 +53,7 @@
     <tbody>
         {% for item in match_list %}
         <tr id="{{ item.match_id }}" class="unknown" href="{% url "europe" item.match_id %}">
-            <th scope="row">{{ forloop.counter }}</th>
+            <th scope="row" class="counter">{{ forloop.counter }}</th>
             <td>{{ item.match_id }}</td>
             <td>{{ item.match_time }}</td>
             <td>{{ item.league }}</td>
@@ -59,10 +85,16 @@ $(document).ready(function () {
             } else {
                 obj.removeClass('unknown').addClass('danger');
                 obj.find('.status-now').first().text('关注');
+
+                new_node = $('<tr class="watching-item"></tr>').append(obj.html())
+
+                for ( var company in result ) {
+                    new_node.find('.status-now').first().text(company);
+                    $("#watching-data").append(new_node);
+                }
             }
         });
     });
-
 });
 
 </script>
