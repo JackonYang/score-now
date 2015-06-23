@@ -17,6 +17,8 @@ class Match(models.Model):
     match_time = models.TimeField(auto_now=True)
     update_time = models.DateTimeField(auto_now=True)
 
+    t_basepoint = models.CharField(u'basepoint', max_length=32)  # col-8
+
     def __unicode__(self):
         return '%s(%s.vs.%s)' % (self.match_id, self.home, self.visiting)
 
