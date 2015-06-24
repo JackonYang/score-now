@@ -26,6 +26,10 @@
             <th>滚球</th>
             <th>足彩公司</th>
             <th>变化次数</th>
+            <th>返还率1</th>
+            <th>返还率2</th>
+            <th>返还率3</th>
+            <th>返还率4</th>
             <th>初盘 主胜</th>
             <th>初盘 和</th>
             <th>初盘 客胜</th>
@@ -92,7 +96,6 @@ $(document).ready(function () {
         $.each(arr, function (i, data) {
             sum += Number(data[idx]);
         });
-        console.log(sum);
         return Math.round(100 * sum / arr.length) / 100;
     };
 
