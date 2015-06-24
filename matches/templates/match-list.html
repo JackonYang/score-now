@@ -100,6 +100,20 @@ $(document).ready(function () {
     };
 
 
+    var return_rate = function (arr, idx) {
+        if ( idx >= arr.length ) {
+            return '-';
+        }
+
+        A = arr[idx][0];
+        B = arr[idx][1];
+        C = arr[idx][2];
+
+        return Math.round(10000 * A * B * C / (A*B + B*C + A*C)) / 100;
+    };
+
+
+
     $('#modify-num').text(threshold);
     $("tr.unknown").each(function() {
         var obj = $(this);
@@ -121,6 +135,12 @@ $(document).ready(function () {
 
                     // modify num of a company
                     $('<td></td>').text(his.length).appendTo(new_node);
+
+                    // return rate
+                    $('<td class="return-rate"></td>').text(return_rate(his, 0)).appendTo(new_node);
+                    $('<td class="return-rate"></td>').text(return_rate(his, 1)).appendTo(new_node);
+                    $('<td class="return-rate"></td>').text(return_rate(his, 2)).appendTo(new_node);
+                    $('<td class="return-rate"></td>').text(return_rate(his, 3)).appendTo(new_node);
 
                     // initial data
                     $('<td class="initial-home"></td>').text(his[0][0]).appendTo(new_node);
