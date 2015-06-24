@@ -67,7 +67,7 @@
             <td>{{ item.match_id }}</td>
             <td>{{ item.match_time }}</td>
             <td>{{ item.league }}</td>
-            <td>{{ item.home }}</td>
+            <td>{{ item.home|striptags }}</td>
             <td>{{ item.visiting }}</td>
             <td>{{ item.is_betting }}</td>
             <td class="status-now">待分析</td>
