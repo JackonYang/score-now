@@ -10,7 +10,10 @@
 <div class="table-responsive">
 
 <table class="table watching">
-    <caption>今日关注比赛(共 <span id="watch-num"></span>)</caption>
+    <caption>
+        今日关注比赛(共 <span id="watch-num"></span>),
+        赔率变化次数 <= <span id="modify-num"></span> 次
+    </caption>
 
     <thead>
         <tr>
@@ -22,6 +25,7 @@
             <th>客队</th>
             <th>滚球</th>
             <th>足彩公司</th>
+            <th>变化次数</th>
         </tr>
     </thead>
 
@@ -75,6 +79,8 @@
 <script>
 
 $(document).ready(function () {
+    var threshold = 5;
+    $('#modify-num').text(threshold);
     $("tr.unknown").each(function() {
         var obj = $(this);
 
@@ -86,12 +92,15 @@ $(document).ready(function () {
                 obj.removeClass('unknown').addClass('danger');
                 obj.find('.status-now').first().text('关注');
 
-                new_node = $('<tr class="watching-item"></tr>').append(obj.html())
-
-                for ( var company in result ) {
+                $.each(result, function (company, his) {
+                    if (threshold < his.length) {
+                        return;
+                    }
+                    new_node = $('<tr class="watching-item"></tr>').append(obj.html())
                     new_node.find('.status-now').first().text(company);
+                    $('<td></td>').text(his.length).appendTo(new_node);
                     $("#watching-data").append(new_node);
-                }
+                });
             }
         });
     });
